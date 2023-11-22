@@ -1,0 +1,3 @@
+rootProject.name = 'beanprototype'
+include 'iam-infra'
+project(':iam-infra').projectDir = file('iam/infra')

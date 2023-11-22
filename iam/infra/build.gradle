@@ -1,0 +1,125 @@
+
+// If your build script needs to use external libraries, you can add them to the script’s classpath in the build script itself. You do this using the buildscript() method, passing in a block which declares the build script classpath.
+// Example 13. Declaring external dependencies for the build script
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'commons-codec', name: 'commons-codec', version: '1.2'
+    }
+}
+
+plugins {
+    id 'java-library'
+    // By applying the Java Library Plugin, you get a whole host of features:
+    // A compileJava task that compiles all the Java source files under src/main/java
+    // A compileTestJava task for source files under src/test/java
+    // A test task that runs the tests from src/test/java
+    // A jar task that packages the main compiled classes and resources from src/main/resources into a single JAR named <project>-<version>.jar
+    // A javadoc task that generates Javadoc for the main classes
+    // This isn’t sufficient to build any non-trivial Java project — at the very least, you’ll probably have some file dependencies. But it means that your build script only needs the information that is specific to your project.
+}
+
+plugins {
+    id 'application' // Apply the application plugin to add support for building a CLI application in Java.
+}
+
+defaultTasks 'hello', 'task0' , 'build'
+
+repositories {
+    mavenCentral() // Use Maven Central for resolving dependencies.
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3' // Use JUnit Jupiter for testing.
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // https://mvnrepository.com/artifact/software.amazon.awssdk/dynamodb
+    implementation group: 'software.amazon.awssdk', name: 'dynamodb', version: '2.21.27' // This dependency is used by the application.
+}
+
+
+application {
+    mainClass = 'bean.App' // Define the main class for the application.
+}
+
+
+tasks.register('intro') {
+    dependsOn tasks.hello
+    doLast {
+        println "I'm Gradle"
+    }
+}
+
+tasks.register('upper') {
+    doLast {
+        String someString = 'mY_nAmE'
+        println "Original: $someString"
+        println "Upper case: ${someString.toUpperCase()}"
+    }
+}
+
+tasks.register('count') {
+    doLast {
+        4.times { print "$it " }
+    }
+}
+
+4.times { counter ->
+    tasks.register("task$counter") {
+        doLast {
+            println "Called with gradle -q task$counter"
+            println "I'm task number $counter"
+        }
+    }
+}
+
+// accessing a task via API at runtime - adding dependency
+tasks.named('task0') { dependsOn('task2', 'task3') }
+
+// accessing ... - adding behaviour
+tasks.register('hello') {
+    doLast {
+        println 'Hello Earth'
+    }
+}
+tasks.named('hello') {
+    doFirst {
+        println 'Hello Venus'
+    }
+}
+tasks.named('hello') {
+    doLast {
+        println 'Hello Mars'
+    }
+}
+tasks.named('hello') {
+    doLast {
+        println 'Hello Jupiter'
+    }
+}
+
+// Having declared the build script classpath, you can use the classes in your build script as you would any other classes on the classpath. The following example adds to the previous example, and uses classes from the build script classpath.
+// Example 14. A build script with external dependencies
+import org.apache.commons.codec.binary.Base64
+
+tasks.register('encode') {
+    doLast {
+        def byte[] encodedString = new Base64().encode('hello world\n'.getBytes())
+        println new String(encodedString)
+    }
+}
+
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+        // Configuring the toolchain protects against problems with the project being built with different Java versions. 
+    }
+}
+
+// The version string is important for tracking the progression of the project. The project version is also used in archive names by default.
+version = '0.1.0'
+
