@@ -29,7 +29,6 @@ import java.util.List;
 public class DynamoDBListTables {
 
     public static void main(String[] args) {
-
         System.out.println("Listing your Amazon DynamoDB tables:\n");
         ProfileCredentialsProvider credentialsProvider = ProfileCredentialsProvider.create();
         Region region = Region.CA_CENTRAL_1;
@@ -83,4 +82,3 @@ public class DynamoDBListTables {
     }
     // snippet-end:[dynamodb.java2.list_tables.main]
 }
-

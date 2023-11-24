@@ -38,6 +38,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/software.amazon.awssdk/dynamodb
     implementation group: 'software.amazon.awssdk', name: 'dynamodb', version: '2.21.27' // This dependency is used by the application.
+    implementation group: 'software.amazon.awssdk', name: 'cognitoidentityprovider', version: '2.21.27' // This dependency is used by the application.
+    implementation group: 'software.amazon.awssdk', name: 'cognitoidentity', version: '2.21.27' // This dependency is used by the application.    
 }
 
 
