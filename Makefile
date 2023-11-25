@@ -1,2 +1,2 @@
 iam-infra:
-	gradle iam-infra:run
+	./gradlew iam-infra:run

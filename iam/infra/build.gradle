@@ -117,8 +117,8 @@ tasks.register('encode') {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-        // Configuring the toolchain protects against problems with the project being built with different Java versions. 
+        languageVersion = JavaLanguageVersion.of(21)
+        // Configuring the toolchain protects against problems with the project being built with different Java versions.
     }
 }
 
